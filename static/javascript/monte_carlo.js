@@ -1,4 +1,4 @@
-CALCULATION_TIME = 5;
+CALCULATION_TIME = 6;
 EXPLORATION_PARAMETER = Math.pow(2, 1 / 2);
 
 class MonteCarloTreeSearch {
