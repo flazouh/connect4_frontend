@@ -64,7 +64,7 @@ function setup() {
     local_player_id = state.current_player_id;
     setTimeout(() => {
         state.get_player_from_id(state.current_player_id).notify_turn();
-    }, 1000)
+    }, 500)
 
 }
 
