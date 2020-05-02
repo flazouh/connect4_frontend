@@ -1,17 +1,9 @@
-import http.server
-import socketserver
+from flask import Flask, render_template
+app = Flask(__name__)
 
-class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == '/':
-            self.path = 'index.html'
-        return http.server.SimpleHTTPRequestHandler.do_GET(self)
+@app.route("/")
+def main():
+    return render_template('index.html')
 
-# Create an object of the above class
-handler_object = MyHttpRequestHandler
-
-PORT = 8000
-my_server = socketserver.TCPServer(("", PORT), handler_object)
-
-# Star the server
-my_server.serve_forever()
+if __name__ == "__main__":
+    app.run()

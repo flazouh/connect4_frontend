@@ -16,9 +16,7 @@ let game_type = GameType.HUMAN_VS_IA;
 // let game_type = GameType.HUMAN_VS_HUMAN;
 // let game_type = GameType.IA_VS_IA;
 
-function preload() {
-    font = loadFont("./fonts/chukyfive.otf")
-}
+
 
 function initialize_cells() {
     for (let col = 0; col < COLS; col++) {
