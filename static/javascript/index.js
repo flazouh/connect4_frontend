@@ -58,6 +58,7 @@ function setup() {
             break;
 
     }
+    //random first player
     first_player = Math.floor((Math.random() * 2));
     console.log(first_player);
     state.current_player_id = first_player;
