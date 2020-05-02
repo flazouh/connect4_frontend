@@ -1,4 +1,4 @@
-CALCULATION_TIME = 1;
+CALCULATION_TIME = 5;
 EXPLORATION_PARAMETER = Math.pow(2, 1 / 2);
 
 class MonteCarloTreeSearch {
@@ -14,7 +14,7 @@ class MonteCarloTreeSearch {
         let outcome = null;
         while (this.resources_left(time_spent)) {
             // console.log(root);
-
+            // debugger
             leaf = this.traverse(root);
             outcome = this.simulate(leaf);
             this.backpropagate(leaf, outcome);
@@ -105,9 +105,9 @@ class MonteCarloTreeSearch {
     }
 
     pick_unvisited_children(children) {
-        let array = this.shuffle(children);
-        for (let i = 0; i < array.length; i++) {
-            let child = array[i];
+        children = this.shuffle(children);
+        for (let i = 0; i < children.length; i++) {
+            let child = children[i];
             if (child.is_leaf) {
                 return child
             }
