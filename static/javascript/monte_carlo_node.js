@@ -1,12 +1,13 @@
 class MonteCarloNode {
-    state = null;
-    move = null;
+    win_rate = null;
+    nb_simulations = 0;
+    nb_wins = 0;
 
+    state = null;
     children = [];
     parent = null;
 
-    nb_simulations = 0;
-    nb_wins = 0;
+
 
     constructor(state, parent) {
         this.state = state;
@@ -24,7 +25,6 @@ class MonteCarloNode {
             copy.play_move(move);
 
             let child = new MonteCarloNode(copy, this);
-            // child.move = move;
             this.children.push(child)
         })
     }

@@ -1,6 +1,6 @@
 class IAPlayer extends Player {
     monte_carlo = null;
-    tree = null;
+    // tree = null;
 
     constructor(id, state) {
         super(id, state);
@@ -12,20 +12,21 @@ class IAPlayer extends Player {
         let copy = this.state.copy();
         // debugger
         let root = new MonteCarloNode(copy, null);
-        if (root.state.move_played_to_reach_position != null){
-            if (this.tree !== null){
-                let past_result = this.search_past_result(root);
-                if (past_result !== null){
-                    // console.log("found past result");
-                    // console.log(past_result);
-                    root = past_result
-                }
-            }
-
-        }
+        // if (root.state.move_played_to_reach_position != null){
+        //     if (this.tree !== null){
+        //         let past_result = this.search_past_result(root);
+        //         if (past_result !== null){
+        //             // debugger
+        //             // console.log("found past result");
+        //             // console.log(past_result);
+        //             root = past_result
+        //         }
+        //     }
+        //
+        // }
 
         let node = this.monte_carlo.get_best_node(root);
-        this.tree = node;
+        // this.tree = node;
         let move = node.state.move_played_to_reach_position;
         place_disc(move.col, move.row);
     }

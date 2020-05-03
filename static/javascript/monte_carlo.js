@@ -23,9 +23,10 @@ class MonteCarloTreeSearch {
             time_spent += delta;
             last_loop_call_time = Date.now();
         }
-        console.log(root);
 
-        return this.best_child(root)
+        console.log(root);
+        let best_child = this.best_child(root);
+        return best_child
     }
 
     resources_left(time_spent) {
@@ -91,6 +92,7 @@ class MonteCarloTreeSearch {
         }
 
         node.nb_simulations += 1;
+        node.win_rate = node.nb_wins / node.nb_simulations;
         if (node.is_root()) return;
 
         this.backpropagate(node.parent, outcome);
@@ -98,8 +100,11 @@ class MonteCarloTreeSearch {
 
     best_child(node) {
         // debugger
+        // node.children.forEach(child => {
+        //     child.win_rate = child.nb_wins / child.nb_simulations
+        // });
         let max = node.children.reduce(function (prev, current) {
-            return (prev.nb_simulations > current.nb_simulations) ? prev : current
+            return (prev.win_rate > current.win_rate) ? prev : current
         });
         return max
     }

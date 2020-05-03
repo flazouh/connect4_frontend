@@ -59,13 +59,13 @@ function setup() {
 
     }
     //random first player
-    first_player = Math.floor((Math.random() * 2));
-    console.log(first_player);
-    state.current_player_id = first_player;
+    // first_player = Math.floor((Math.random() * 2));
+    // console.log(first_player);
+    state.current_player_id = PlayerID.PLAYER2;
     local_player_id = state.current_player_id;
     setTimeout(() => {
         state.get_player_from_id(state.current_player_id).notify_turn();
-    }, 500)
+    }, 1000)
 
 }
 
