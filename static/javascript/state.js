@@ -1,17 +1,17 @@
 class State {
     grid = null;
-    current_player_id = null;
-    player_to_reach_position = null;
-    move_played_to_reach_position = null;
+    current_player_id = 0;
+    player_to_reach_position = 0;
+    move_played_to_reach_position = 0;
     players = {};
     winner = null;
     winnner_discs = null;
     nb_moves = 0;
-    outcome = null;
+    outcome = 0;
 
 
     constructor() {
-        this.grid = new Array(COLS).fill(null).map(() => new Array(ROWS).fill(null));
+        this.grid = new Array(COLS).fill(null).map(() => new Array(ROWS).fill(0));
     }
     get_valid_moves(){
         let valid_moves = [];
@@ -120,8 +120,7 @@ class State {
         this.get_player_from_id(this.current_player_id).is_playing = false;
         this.player_to_reach_position = this.current_player_id;
 
-        let id = (this.current_player_id + 1) % 2;
-        this.current_player_id = id;
+        this.current_player_id = (this.current_player_id + 1) % 2;
 
     }
 

@@ -1,15 +1,20 @@
-const directions = {
-    UP: 0,
-    UP_RIGHT: 1,
-    RIGHT: 2,
-    DOWN_RIGHT: 3,
-    DOWN: 4,
-    DOWN_LEFT: 5,
-    LEFT: 6,
-    UP_LEFT: 7,
+EXPLORATION_PARAMETER = Math.pow(2, 1 / 2);
 
-};
-for (let direction in directions) {
-    console.log(direction);
+function get_uct(node) {
+    if (node.nb_simulations == 0) return Number.POSITIVE_INFINITY;
+    let term1 = node.nb_wins / node.nb_simulations;
+    console.log(term1);
+    var log = Math.log(node.parent.nb_simulations)
+    console.log(log);
+    var division = log/node.nb_simulations
+    console.log(division);
+    var power = Math.pow(division, 1 / 2)
+    console.log(power);
 
+    var term2 = power
+    console.log(term2);
+    // return term1 + (EXPLORATION_PARAMETER * term2)
+    return term1 + EXPLORATION_PARAMETER * term2
 }
+
+console.log(get_uct({nb_simulations: 244, parent:{nb_simulations: 1200},nb_wins: 120}));

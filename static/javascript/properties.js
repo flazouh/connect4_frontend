@@ -3,8 +3,8 @@ const COLS = 7;
 
 
 const PlayerID = {
-    PLAYER1: 0,
-    PLAYER2: 1
+    PLAYER1: 1,
+    PLAYER2: 2
 };
 
 const Outcome = {
@@ -23,6 +23,6 @@ const GameType = {
 const Colors = {
     BLUE: '#0034ff',
     YELLOW: '#ffcc23',
-    RED: '#ff6056',
+    RED: '#ff4941',
     WHITE: '#ffffff',
 };

@@ -3,7 +3,6 @@ EXPLORATION_PARAMETER = Math.pow(2, 1 / 2);
 
 class MonteCarloTreeSearch {
 
-
     get_best_node(root) {
 
         let time_spent = 0;
@@ -75,6 +74,8 @@ class MonteCarloTreeSearch {
 
     backpropagate(node, outcome) {
         // console.log("backpropagate");
+        node.nb_simulations += 1;
+
         switch (outcome) {
             case Outcome.DRAW:
                 node.nb_wins += 0.5;
@@ -91,7 +92,6 @@ class MonteCarloTreeSearch {
                 break;
         }
 
-        node.nb_simulations += 1;
         node.win_rate = node.nb_wins / node.nb_simulations;
         if (node.is_root()) return;
 
