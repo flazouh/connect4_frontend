@@ -35,8 +35,8 @@ class IAPlayer extends Player {
         data = JSON.stringify(data)
         console.log(data);
         postData(AI_URL, data)
-            .then(move => {
-                console.log(move);
+            .then(data => {
+                move = data.move
                 place_disc(move.col, move.row)
             });
 
