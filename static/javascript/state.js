@@ -2,7 +2,7 @@ class State {
     grid = null;
     current_player_id = 0;
     player_to_reach_position = 0;
-    move_played_to_reach_position = 0;
+    move_played_to_reach_position = null;
     players = {};
     winner = null;
     winnner_discs = null;

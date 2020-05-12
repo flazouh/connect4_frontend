@@ -32,25 +32,13 @@ class IAPlayer extends Player {
             move: move,
             nbmoves: this.state.nb_moves
         }
+        data = JSON.stringify(data)
         console.log(data);
-        // let params = {
-        //     headers: {"Content-Type": "application.json"},
-        //     body: JSON.stringify(data),
-        //     method: "POST"
-        // }
-        fetch(AI_URL, {
-            mode: 'cors',
-            method: 'POST', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        // postData(AI_URL, data)
-        //     .then(move => {
-        //         console.log(move);
-        //         place_disc(move.col, move.row)
-        //     });
+        postData(AI_URL, data)
+            .then(move => {
+                console.log(move);
+                place_disc(move.col, move.row)
+            });
 
 
     }
