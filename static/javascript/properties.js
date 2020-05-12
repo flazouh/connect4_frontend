@@ -3,14 +3,17 @@ const COLS = 7;
 
 
 const PlayerID = {
+    NO_PLAYER: 0,
     PLAYER1: 1,
     PLAYER2: 2
 };
 
 const Outcome = {
-    DRAW: 0,
+    NONE: 0,
     PLAYER1_WON: 1,
     PLAYER2_WON: 2,
+    DRAW: 3,
+
 };
 
 const GameType = {

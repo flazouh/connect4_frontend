@@ -1,10 +1,11 @@
-class HumanPlayer extends Player{
+class HumanPlayer extends Player {
     constructor(id, state) {
         super(id, state);
 
     }
 
-    notify_turn() {
-        super.notify_turn();
+    play() {
+        super.play()
     }
+
 }

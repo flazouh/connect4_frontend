@@ -17,7 +17,6 @@ let game_type = GameType.HUMAN_VS_IA;
 // let game_type = GameType.IA_VS_IA;
 
 
-
 function initialize_cells() {
     for (let col = 0; col < COLS; col++) {
         col_array = [];
@@ -62,19 +61,22 @@ function setup() {
     // first_player = Math.floor((Math.random() * 2));
     // console.log(first_player);
     state.current_player_id = PlayerID.PLAYER2;
-    local_player_id = state.current_player_id;
+    local_player_id = PlayerID.PLAYER1;
+
     setTimeout(() => {
-        state.get_player_from_id(state.current_player_id).notify_turn();
+        state.get_player_from_id(state.current_player_id).play();
     }, 1000)
 
 }
 
 function get_column_from_mouse() {
+    console.log("get_column_from_mouse")
     for (let i = 0; i < COLS; i++) {
         for (let j = 0; j < ROWS; j++) {
             cell = discs[i][j];
             distance = Math.sqrt(Math.pow(mouseX - cell.x, 2) + Math.pow(mouseY - cell.y, 2));
             if (distance <= CELL_DIAMETER / 2) {
+                console.log("column", i, "was pressed")
                 return i
             }
         }
@@ -92,23 +94,24 @@ function print_mouse_coordinate() {
 
 
 function on_disc_animation_complete(position) {
-    // console.log("complete");
+    console.log("complete");
     animation_playing = false;
     state.play_move(position);
-
-    if (state.outcome !== null) {
+    // local_player_id = state.current_player_id;
+    console.log("local_player_id is now", local_player_id)
+    if (state.outcome !== Outcome.NONE) {
         if (state.winner !== null) {
             win_animation(state.winnner_discs);
         }
         return
     }
-    change_turn_in_next_draw = true;
 
 
 }
 
 
 function place_disc(col, row) {
+    console.log("placedisc")
     let target_disc = discs[col][row];
     let coordinate = pixels_to_coordinate(target_disc.x, target_disc.y);
     start_coordinate = {
@@ -162,7 +165,9 @@ function win_animation(disc_coordinates) {
 
 function mousePressed() {
     // debugger
-    if (state.outcome !== null) return;
+    console.log("state.current_player_id", state.current_player_id)
+    console.log("is_playing", state.get_player_from_id(state.current_player_id).is_playing)
+    if (state.outcome !== Outcome.NONE) return;
     if (!state.get_player_from_id(local_player_id).is_playing) return;
     if (animation_playing) return;
 
@@ -191,11 +196,12 @@ function draw() {
     // console.log("draw");
     render_background();
     render_cells(state);
-    if (change_turn_in_next_draw) {
-        state.get_player_from_id(state.current_player_id).notify_turn();
-        local_player_id = state.current_player_id;
-        change_turn_in_next_draw = false
-    }
+    // if (change_turn_in_next_draw) {
+    //     state.get_player_from_id(state.current_player_id).play_move().then(() => {
+    //         local_player_id = state.current_player_id;
+    //         change_turn_in_next_draw = false
+    //     });
+    // }
 }
 
 function render_background() {

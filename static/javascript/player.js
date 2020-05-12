@@ -9,7 +9,8 @@ class Player{
         this.state = state;
     }
 
-    notify_turn(){
+    play(){
         this.is_playing = true;
     }
+
 }

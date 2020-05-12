@@ -17,4 +17,4 @@ function get_uct(node) {
     return term1 + EXPLORATION_PARAMETER * term2
 }
 
-console.log(get_uct({nb_simulations: 244, parent:{nb_simulations: 1200},nb_wins: 120}));
+console.log(get_uct({nb_simulations: 279740, parent:{nb_simulations: 672313},nb_wins: 187591.5}));

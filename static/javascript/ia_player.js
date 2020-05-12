@@ -1,4 +1,5 @@
 AI_URL = 'https://sleepy-tundra-33813.herokuapp.com/getmove'
+AI_URL = 'http://localhost:5001/getmove'
 
 class IAPlayer extends Player {
     monte_carlo = null;
@@ -10,16 +11,8 @@ class IAPlayer extends Player {
         this.monte_carlo = new MonteCarloTreeSearch()
     }
 
-    notify_turn() {
-        super.notify_turn();
-        // let copy = this.state.copy();
-        // // debugger
-        // let root = new MonteCarloNode(copy, null);
-        //
-        //
-        // let node = this.monte_carlo.get_best_node(root);
-        //
-        // let move = node.state.move_played_to_reach_position;
+    async play() {
+        super.play()
         let move = this.state.move_played_to_reach_position
         if (move === null) {
             move = {col: 0, row: 0}
@@ -33,14 +26,13 @@ class IAPlayer extends Player {
             nbmoves: this.state.nb_moves
         }
         console.log(data);
-        postData(AI_URL, data)
+        await postData(AI_URL, data)
             .then(data => {
                 move = data.move
                 console.log(move)
                 place_disc(move.col, move.row)
             });
-
-
+        console.log("ai done")
     }
 
     same_move(node1, node2) {
@@ -65,9 +57,9 @@ class IAPlayer extends Player {
 
 }
 
-async function postData(url = '', data = {}) {
-    // Default options are marked with *
-    const response = await fetch(url, {
+
+function postData(url, data) {
+    return fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -79,6 +71,12 @@ async function postData(url = '', data = {}) {
         redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(data) // body data type must match "Content-Type" header
-    });
-    return response.json(); // parses JSON response into native JavaScript objects
+    })
+        .then(response => response.json())
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
