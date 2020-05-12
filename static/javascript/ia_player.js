@@ -1,4 +1,4 @@
-AI_URL = 'https://sleepy-tundra-33813.herokuapp.com/getmove'
+AI_URL = 'https://sleepy-tundra-33813.herokuapp.com/getmove/'
 
 class IAPlayer extends Player {
     monte_carlo = null;
