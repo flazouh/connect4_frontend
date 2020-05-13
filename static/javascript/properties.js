@@ -1,6 +1,3 @@
-const ROWS = 6;
-const COLS = 7;
-
 
 const PlayerID = {
     NO_PLAYER: 0,

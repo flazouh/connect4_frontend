@@ -3,9 +3,4 @@ class HumanPlayer extends Player {
         super(id, state);
 
     }
-
-    play() {
-        super.play()
-    }
-
 }

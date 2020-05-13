@@ -8,13 +8,12 @@ const ANIMATION_TIME = 0.5;
 
 let discs = [];
 
-let state;
-let local_player_id;
+let game;
 let animation_playing = false;
-let change_turn_in_next_draw = false;
-let game_type = GameType.HUMAN_VS_IA;
+
+// let game_type = GameType.HUMAN_VS_IA;
 // let game_type = GameType.HUMAN_VS_HUMAN;
-// let game_type = GameType.IA_VS_IA;
+let game_type = GameType.IA_VS_IA;
 
 
 function initialize_cells() {
@@ -40,31 +39,10 @@ function setup() {
     // textFont(font);
     textSize(CELL_DIAMETER * 0.7);
     textAlign(CENTER, CENTER);
-
-    state = new State();
-    switch (game_type) {
-        case GameType.HUMAN_VS_HUMAN:
-            state.players[PlayerID.PLAYER1] = new HumanPlayer(PlayerID.PLAYER1, state);
-            state.players[PlayerID.PLAYER2] = new HumanPlayer(PlayerID.PLAYER2, state);
-            break;
-        case GameType.HUMAN_VS_IA:
-            state.players[PlayerID.PLAYER1] = new HumanPlayer(PlayerID.PLAYER1, state);
-            state.players[PlayerID.PLAYER2] = new IAPlayer(PlayerID.PLAYER2, state);
-            break;
-        case GameType.IA_VS_IA:
-            state.players[PlayerID.PLAYER1] = new IAPlayer(PlayerID.PLAYER1, state);
-            state.players[PlayerID.PLAYER2] = new IAPlayer(PlayerID.PLAYER2, state);
-            break;
-
-    }
-    //random first player
-    // first_player = Math.floor((Math.random() * 2));
-    // console.log(first_player);
-    state.current_player_id = PlayerID.PLAYER2;
-    local_player_id = PlayerID.PLAYER1;
+    game = new Game(game_type)
 
     setTimeout(() => {
-        state.get_player_from_id(state.current_player_id).play();
+        game.get_player_from_id(game.state.current_player).play();
     }, 1000)
 
 }
@@ -93,25 +71,20 @@ function print_mouse_coordinate() {
 }
 
 
-function on_disc_animation_complete(position) {
-    console.log("complete");
+function on_disc_animation_complete(coordinates) {
+    console.log("on_disc_animation_complete()");
     animation_playing = false;
-    state.play_move(position);
-    // local_player_id = state.current_player_id;
-    console.log("local_player_id is now", local_player_id)
-    if (state.outcome !== Outcome.NONE) {
-        if (state.winner !== null) {
-            win_animation(state.winnner_discs);
-        }
-        return
-    }
+    game.play_move(coordinates);
 
+    if (game.state.outcome === Outcome.NONE) return
+    if (game.state.winner === null) return
 
+    win_animation(game.state.winnner_discs);
 }
 
 
 function place_disc(col, row) {
-    console.log("placedisc")
+    console.log("place_disc()")
     let target_disc = discs[col][row];
     let coordinate = pixels_to_coordinate(target_disc.x, target_disc.y);
     start_coordinate = {
@@ -122,8 +95,7 @@ function place_disc(col, row) {
 }
 
 function start_disc_animation(start_coordinate, end_coordinate, position) {
-    // debugger
-    // console.log('start_disc_animation');
+    console.log('start_disc_animation()');
     gsap.to(start_coordinate, {
         x: end_coordinate.x,
         y: end_coordinate.y,
@@ -165,16 +137,16 @@ function win_animation(disc_coordinates) {
 
 function mousePressed() {
     // debugger
-    console.log("state.current_player_id", state.current_player_id)
-    console.log("is_playing", state.get_player_from_id(state.current_player_id).is_playing)
-    if (state.outcome !== Outcome.NONE) return;
-    if (!state.get_player_from_id(local_player_id).is_playing) return;
+    console.log("state.current_player", game.state.current_player)
+    console.log("is_playing", game.get_player_from_id(game.state.current_player).is_playing)
+    if (game.state.outcome !== Outcome.NONE) return;
+    if (!game.get_player_from_id(game.get_local_player()).is_playing) return;
     if (animation_playing) return;
 
     let col = get_column_from_mouse();
     if (col == null) return;
 
-    let row = state.get_potential_cell_row(col);
+    let row = game.state.get_potential_cell_row(col);
     if (row == null) return;
     place_disc(col, row)
 
@@ -182,26 +154,17 @@ function mousePressed() {
 
 
 function render_disc_animation(animation_coordinate) {
-
     // console.log("render_disc_animation");
     // console.log(animation_coordinate);
-    let c = get_color_for_player(state.current_player_id);
+    let c = get_color_for_player(game.state.current_player);
     fill(c);
-
     ellipse(animation_coordinate.x, animation_coordinate.y, CELL_DIAMETER)
 
 }
 
 function draw() {
-    // console.log("draw");
     render_background();
-    render_cells(state);
-    // if (change_turn_in_next_draw) {
-    //     state.get_player_from_id(state.current_player_id).play_move().then(() => {
-    //         local_player_id = state.current_player_id;
-    //         change_turn_in_next_draw = false
-    //     });
-    // }
+    render_cells(game.state);
 }
 
 function render_background() {
@@ -210,8 +173,8 @@ function render_background() {
     rect(0, 0, GRID_WIDTH, GRID_HEIGHT, GRID_BORDER_RADIUS);
 }
 
-function get_color_for_player(grid_element) {
-    switch (grid_element) {
+function get_color_for_player(player) {
+    switch (player) {
         case PlayerID.PLAYER1:
             return Colors.YELLOW;
         case PlayerID.PLAYER2:
@@ -225,9 +188,9 @@ function render_cells(state) {
 
     for (let col = 0; col < COLS; col++) {
         for (let row = 0; row < ROWS; row++) {
-            disc = discs[col][row];
+            let disc = discs[col][row];
             noStroke();
-            fill(get_color_for_player(state.get_cell_state(col, row)));
+            fill(get_color_for_player(game.state.get_player_from_disc(col, row)));
             ellipse(disc.x, disc.y, disc.diameter);
             fill(0);
             text(disc.number, disc.x, disc.y)

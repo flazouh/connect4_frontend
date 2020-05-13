@@ -1,39 +1,27 @@
+const ROWS = 6;
+const COLS = 7;
+
 class State {
-    grid = null;
-    current_player_id = 0;
-    player_to_reach_position = 0;
-    move_played_to_reach_position = null;
-    players = {};
-    winner = null;
-    winnner_discs = null;
+    grid
+    current_player = 0
+    previous_player = 0
+    move
+    winner
+    winnner_discs
     nb_moves = 0;
-    outcome = Outcome.NONE;
+    outcome = Outcome.NONE
 
 
     constructor() {
         this.grid = new Array(COLS).fill(null).map(() => new Array(ROWS).fill(PlayerID.NO_PLAYER));
     }
 
-    get_valid_moves() {
-        let valid_moves = [];
-        for (let col = 0; col < COLS; col++) {
-            let row = this.get_potential_cell_row(col);
-            if (row == null) continue;
-            valid_moves.push({col: col, row: row})
-        }
-        return valid_moves
-    }
-
-    set_cell_state(move, player_id) {
+    set_player(move, player_id) {
         this.grid[move.col][move.row] = player_id;
     }
 
-    get_cell_state(col, row) {
+    get_player_from_disc(col, row) {
         return this.grid[col][row]
-    }
-
-    get_player_from_id(id) {
-        return this.players[id]
     }
 
     get_potential_cell_row(col) {
@@ -48,42 +36,44 @@ class State {
 
     copy() {
         let copy = new State();
-        copy.current_player_id = this.current_player_id;
-        copy.player_to_reach_position = this.player_to_reach_position;
-        copy.move_played_to_reach_position = this.move_played_to_reach_position;
-        copy.players = this.players;
+        copy.current_player = this.current_player;
+        copy.previous_player = this.previous_player;
+        copy.move = this.move;
         copy.nb_moves = this.nb_moves;
         copy.outcome = this.outcome;
 
         for (let col = 0; col < COLS; col++) {
             for (let row = 0; row < ROWS; row++) {
-                let player_id = this.get_cell_state(col, row);
+                let player_id = this.get_player_from_disc(col, row);
                 if (player_id === null) continue;
 
-                copy.set_cell_state({col: col, row: row}, player_id)
+                copy.set_player({col: col, row: row}, player_id)
             }
         }
         return copy
     }
 
     play_move(move) {
-        this.move_played_to_reach_position = move;
+        console.log(this.constructor.name, 'play_move()')
+        this.move = move;
         this.nb_moves += 1;
-        this.set_cell_state(move, this.current_player_id);
+        this.set_player(move, this.current_player);
+        if (this.nb_moves === COLS * ROWS) {
+            this.outcome = Outcome.DRAW
+        }
         let discs = this.has_connected_four(move.col, move.row);
         if (discs) {
             this.game_won(discs)
-        } else if (this.nb_moves === COLS * ROWS) {
-            this.outcome = Outcome.DRAW
         }
         this.change_turn();
+        return this.outcome
     }
 
     game_won(discs) {
-        // console.log(`${this.current_player_id} has won!`);
-        this.winner = this.current_player_id;
+        console.log(`${this.current_player} has won!`);
+        this.winner = this.current_player;
         this.winnner_discs = discs;
-        this.outcome = this.current_player_id === PlayerID.PLAYER1 ? Outcome.PLAYER1_WON : Outcome.PLAYER2_WON
+        this.outcome = this.current_player === PlayerID.PLAYER1 ? Outcome.PLAYER1_WON : Outcome.PLAYER2_WON
     }
 
     has_connected_four(x, y) {
@@ -118,20 +108,16 @@ class State {
     }
 
     change_turn() {
-        console.log("chaging turn")
-        // debugger
-        this.get_player_from_id(this.current_player_id).is_playing = false;
-        this.player_to_reach_position = this.current_player_id;
-        switch (this.current_player_id) {
+        console.log(this.constructor.name, 'change_turn()')
+        this.previous_player = this.current_player;
+        switch (this.current_player) {
             case PlayerID.PLAYER1:
-                this.current_player_id = PlayerID.PLAYER2;
+                this.current_player = PlayerID.PLAYER2;
                 break
             case PlayerID.PLAYER2:
-                this.current_player_id = PlayerID.PLAYER1;
+                this.current_player = PlayerID.PLAYER1;
                 break
         }
-        console.log(this.current_player_id, "is playing after turn change")
-        this.get_player_from_id(this.current_player_id).play()
 
     }
 
