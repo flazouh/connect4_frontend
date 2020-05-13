@@ -11,9 +11,9 @@ let discs = [];
 let game;
 let animation_playing = false;
 
-// let game_type = GameType.HUMAN_VS_IA;
+let game_type = GameType.HUMAN_VS_IA;
 // let game_type = GameType.HUMAN_VS_HUMAN;
-let game_type = GameType.IA_VS_IA;
+// let game_type = GameType.IA_VS_IA;
 
 
 function initialize_cells() {
