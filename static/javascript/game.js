@@ -48,7 +48,7 @@ class Game {
             console.log(this.history)
             let data = {
                 moves: this.history,
-                winner: outcome
+                outcome: outcome
             }
             post_request(SAVE_GAME_URL, data).then(r =>{})
             return
