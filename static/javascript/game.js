@@ -1,4 +1,5 @@
 SAVE_GAME_URL = 'https://sleepy-tundra-33813.herokuapp.com/savegame'
+
 // SAVE_GAME_URL = 'http://localhost:8080/savegame'
 
 class Game {
@@ -44,16 +45,18 @@ class Game {
         this.history.push(move)
         console.log(this.constructor.name, 'play_move()')
         let outcome = this.state.play_move(move)
-        if (outcome !== Outcome.NONE){
-            console.log(this.history)
+        this.get_player_from_id(this.state.previous_player).is_playing = false;
+
+        if (outcome !== Outcome.NONE) {
             let data = {
                 moves: this.history,
                 outcome: outcome
             }
-            post_request(SAVE_GAME_URL, data).then(r =>{})
+            console.log(data)
+            post_request(SAVE_GAME_URL, data).then(r => {
+            })
             return
         }
-        this.get_player_from_id(this.state.previous_player).is_playing = false;
         this.get_player_from_id(this.state.current_player).play()
     }
 
