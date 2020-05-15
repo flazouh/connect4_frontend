@@ -66,13 +66,14 @@ class Game {
     }
 
     post_game() {
-        let ended_at = Date.now()
+        let ended_at = Date.now() / 1000
+        let started_at = this.started_at / 1000
         let data = {
             moves: this.history,
             outcome: this.state.outcome,
-            started_at: this.started_at,
+            started_at: started_at,
             ended_at: ended_at,
-            duration: ended_at - this.started_at
+            duration: ended_at - started_at
         }
         console.log(data)
         post_request(SAVE_GAME_URL, data).then(r => {})
