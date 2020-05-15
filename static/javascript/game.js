@@ -66,8 +66,8 @@ class Game {
     }
 
     post_game() {
-        let ended_at = Date.now() / 1000
-        let started_at = this.started_at / 1000
+        let ended_at = Math.round(Date.now() / 1000)
+        let started_at = Math.round(this.started_at / 1000)
         let data = {
             moves: this.history,
             outcome: this.state.outcome,
