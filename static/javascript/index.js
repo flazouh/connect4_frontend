@@ -77,7 +77,7 @@ function on_disc_animation_complete(coordinates) {
     game.play_move(coordinates);
 
     if (game.state.outcome === Outcome.NONE) return
-    if (game.state.winner === null) return
+    if (game.state.winner == null) return
 
     win_animation(game.state.winnner_discs);
 }
