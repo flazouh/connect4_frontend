@@ -66,7 +66,6 @@ class State {
             this.game_won(discs)
         }
         this.change_turn();
-        return this.outcome
     }
 
     game_won(discs) {

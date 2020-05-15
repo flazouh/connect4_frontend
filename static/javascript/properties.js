@@ -10,7 +10,6 @@ const Outcome = {
     PLAYER1_WON: 1,
     PLAYER2_WON: 2,
     DRAW: 3,
-
 };
 
 const GameType = {

@@ -8,6 +8,8 @@ class Game {
     players = {}
     ai_first = true
     history = []
+    started_at
+    duration
 
     constructor(game_type) {
         this.game_type = game_type
@@ -35,6 +37,7 @@ class Game {
 
         }
         this.state.current_player = PlayerID.PLAYER1;
+        this.started_at = Date.now()
     }
 
     get_player_from_id(id) {
@@ -44,17 +47,11 @@ class Game {
     play_move(move) {
         this.history.push(move)
         console.log(this.constructor.name, 'play_move()')
-        let outcome = this.state.play_move(move)
+        this.state.play_move(move)
         this.get_player_from_id(this.state.previous_player).is_playing = false;
 
-        if (outcome !== Outcome.NONE) {
-            let data = {
-                moves: this.history,
-                outcome: outcome
-            }
-            console.log(data)
-            post_request(SAVE_GAME_URL, data).then(r => {
-            })
+        if (this.state.outcome !== Outcome.NONE) {
+            this.post_game()
             return
         }
         this.get_player_from_id(this.state.current_player).play()
@@ -66,5 +63,18 @@ class Game {
         if (this.game_type === GameType.HUMAN_VS_IA)
             return (this.ai_first ? PlayerID.PLAYER2 : PlayerID.PLAYER1)
 
+    }
+
+    post_game() {
+        let ended_at = Date.now()
+        let data = {
+            moves: this.history,
+            outcome: this.state.outcome,
+            started_at: this.started_at,
+            ended_at: ended_at,
+            duration: ended_at - this.started_at
+        }
+        console.log(data)
+        post_request(SAVE_GAME_URL, data).then(r => {})
     }
 }
