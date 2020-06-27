@@ -6,12 +6,13 @@ class Game {
     game_type
     state
     players = {}
-    ai_first = true
+    ai_first = false
     history = []
     started_at
     duration
 
     constructor(game_type) {
+        console.log("New", game_type)
         this.game_type = game_type
         this.state = new State();
 

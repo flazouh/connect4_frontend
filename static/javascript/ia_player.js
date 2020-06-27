@@ -1,5 +1,5 @@
 AI_URL = 'https://sleepy-tundra-33813.herokuapp.com/getmove'
-// AI_URL = 'http://localhost:5001/getmove'
+// AI_URL = 'http://localhost:8080/getmove'
 
 class IAPlayer extends Player {
 
@@ -22,6 +22,7 @@ class IAPlayer extends Player {
             move: move,
             nbmoves: this.state.nb_moves
         }
+
         await post_request(AI_URL, data)
             .then(data => {
                 move = data.move
