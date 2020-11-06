@@ -1,4 +1,4 @@
-SAVE_GAME_URL = 'https://sleepy-tundra-33813.herokuapp.com/savegame'
+SAVE_GAME_URL = 'https://connect4-vs-ai-backend.herokuapp.com/savegame'
 
 // SAVE_GAME_URL = 'http://localhost:8080/savegame'
 
