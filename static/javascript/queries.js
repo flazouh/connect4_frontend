@@ -1,6 +1,7 @@
 function post_request(url, data) {
     console.log(this.constructor.name, 'request_move()')
-    console.log("Sending data:")
+    console.log("Sending data : to ")
+    console.log(`Sending data : to  ${url} `)
     data = JSON.stringify(data)
     console.log(data)
     return fetch(url, {
