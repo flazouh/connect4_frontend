@@ -1,4 +1,4 @@
-AI_URL = 'https://sleepy-tundra-33813.herokuapp.com/getmove'
+AI_URL = 'https://connect4-vs-ai-backend.herokuapp.com/getmove'
 // AI_URL = 'http://localhost:8080/getmove'
 
 class IAPlayer extends Player {
