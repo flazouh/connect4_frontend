@@ -1,4 +1,5 @@
 AI_URL = 'https://connect4-vs-ai-backend.herokuapp.com/getmove'
+// PLEASE GET UPDATED
 // AI_URL = 'http://localhost:8080/getmove'
 
 class IAPlayer extends Player {
